@@ -1,4 +1,4 @@
-// Liste des spécialités
+// === Données ===
 const specialites = [
   "Médecin Généraliste", "Dentiste", "Dermatologue", "Cardiologue", "Ophtalmologue",
   "Pédiatre", "Psychiatre", "Gynécologue", "Neurologue", "ORL", "Rhumatologue",
@@ -7,52 +7,51 @@ const specialites = [
   "Radiologue", "Infectiologue", "Gériatre", "Sexologue", "Néphrologue"
 ];
 
-// Liste des villes
 const villes = [
   "Paris", "Lyon", "Marseille", "New York", "Tokyo", "Berlin", "Londres",
   "Rome", "Madrid", "Toronto", "Bruxelles", "Dakar", "Sydney", "Buenos Aires",
   "Nairobi", "Casablanca", "Hanoï", "Montréal", "Moscou", "Istanbul"
 ];
 
-// Créneaux horaires possibles
-const creneauxDisponibles = ["08:00", "09:30", "11:00", "14:00", "15:30", "17:00"];
+const horaires = ["08:00", "09:30", "11:00", "14:00", "15:30", "17:00"];
 
-// Fonction pour générer un nom aléatoire de médecin
-function generateNomMedecin() {
-  const prenoms = ["Sophie", "Jean", "Ali", "Maria", "Luca", "Aya", "Fatou", "Tom", "Elena", "Omar"];
-  const noms = ["Dupont", "Martin", "Bernard", "Dubois", "Petit", "Roux", "Lemoine", "Nguyen", "Kowalski", "Singh"];
-  const prenom = prenoms[Math.floor(Math.random() * prenoms.length)];
-  const nom = noms[Math.floor(Math.random() * noms.length)];
-  return `Dr. ${prenom} ${nom}`;
+// Génère un nom de médecin aléatoire
+function generateNom() {
+  const prenoms = ["Alice", "Jean", "Karim", "Lucia", "Naoki", "Elise", "Fatima", "Tom", "Rita", "Omar"];
+  const noms = ["Durand", "Lemoine", "Nguyen", "Kowalski", "Moreau", "Singh", "Petit", "Takahashi", "Lopez", "Smith"];
+  return `Dr. ${prenoms[Math.floor(Math.random() * prenoms.length)]} ${noms[Math.floor(Math.random() * noms.length)]}`;
 }
 
-// Fonction pour mélanger et prendre n éléments d’un tableau
-function shuffleArray(array) {
-  return array
-    .map(value => ({ value, sort: Math.random() }))
-    .sort((a, b) => a.sort - b.sort)
-    .map(({ value }) => value);
+// Mélange aléatoire
+function shuffle(arr) {
+  return arr.sort(() => Math.random() - 0.5);
 }
 
-// Génération des médecins avec RDV
+// Génère des créneaux aléatoires
+function generateCreneaux() {
+  return shuffle([...horaires]).slice(0, 3);
+}
+
+// Génère les RDV garantis pour chaque ville + spécialité
 const rdvs = [];
 
-specialites.forEach(specialite => {
-  villes.forEach(ville => {
-    // Générer 1 à 3 médecins par spécialité et ville
-    const nbMedecins = Math.floor(Math.random() * 3) + 1;
-    for(let i = 0; i < nbMedecins; i++) {
-      const medecin = generateNomMedecin();
-      // Mélanger et prendre 3 créneaux aléatoires
-      const creneaux = shuffleArray(creneauxDisponibles).slice(0, 3);
-      rdvs.push({
-        medecin,
-        specialite,
-        ville,
-        creneaux
-      });
-    }
+villes.forEach(ville => {
+  specialites.forEach(specialite => {
+    rdvs.push({
+      ville,
+      specialite,
+      medecin: generateNom(),
+      creneaux: generateCreneaux()
+    });
   });
 });
 
-console.log(rdvs);
+// Ex : Affiche tous les RDV dans la console
+console.log("RDV générés : ", rdvs);
+
+// Exemple d'affichage HTML (optionnel)
+/*
+rdvs.forEach(rdv => {
+  console.log(`${rdv.medecin} (${rdv.specialite}) à ${rdv.ville} : ${rdv.creneaux.join(", ")}`);
+});
+*/
