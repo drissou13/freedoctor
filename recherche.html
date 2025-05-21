@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Recherche RDV</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 40px; background: #f0f0f0; }
+    h1 { text-align: center; }
+    .form-group { margin-bottom: 1em; }
+    label { display: block; margin-bottom: 0.5em; }
+    select, input { padding: 0.5em; width: 100%; max-width: 400px; }
+    button { padding: 0.6em 1.5em; background-color: #007bff; color: white; border: none; cursor: pointer; margin-top: 1em; }
+    #results { margin-top: 2em; background: white; padding: 1em; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.1); }
+    .rdv-card { margin-bottom: 1em; padding: 0.8em; border-bottom: 1px solid #ddd; }
+    .creneaux span { display: inline-block; background: #e0e0e0; padding: 4px 8px; border-radius: 4px; margin-right: 6px; margin-top: 4px; }
+  </style>
+</head>
+<body>
+  <h1>Recherche de Rendez-vous Médicaux</h1>
+  <div class="form-group">
+    <label for="ville">Choisissez une ville :</label>
+    <select id="ville"></select>
+  </div>
+  <div class="form-group">
+    <label for="specialite">Choisissez une spécialité :</label>
+    <select id="specialite"></select>
+  </div>
+  <button onclick="rechercherRDV()">Rechercher</button>
+  <div id="results"></div>
+  <script>
+    if (!localStorage.getItem("loggedIn")) window.location.href = "index.html";
+  </script>
+  <script src="rdv.js"></script>
+</body>
+</html>

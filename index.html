@@ -2,170 +2,31 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Simulateur Doctolib</title>
+  <title>Connexion</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 40px;
-      background: #f0f0f0;
-    }
-    h1 {
-      text-align: center;
-    }
-    .form-group {
-      margin-bottom: 1em;
-    }
-    label {
-      display: block;
-      margin-bottom: 0.5em;
-    }
-    select, input {
-      padding: 0.5em;
-      width: 100%;
-      max-width: 400px;
-    }
-    button {
-      padding: 0.6em 1.5em;
-      background-color: #007bff;
-      color: white;
-      border: none;
-      cursor: pointer;
-      margin-top: 1em;
-    }
-    #results {
-      margin-top: 2em;
-      background: white;
-      padding: 1em;
-      border-radius: 8px;
-      box-shadow: 0 0 5px rgba(0,0,0,0.1);
-    }
-    .rdv-card {
-      margin-bottom: 1em;
-      padding: 0.8em;
-      border-bottom: 1px solid #ddd;
-    }
-    .creneaux span {
-      display: inline-block;
-      background: #e0e0e0;
-      padding: 4px 8px;
-      border-radius: 4px;
-      margin-right: 6px;
-      margin-top: 4px;
-    }
+    body { font-family: Arial, sans-serif; background: #f0f0f0; display: flex; justify-content: center; align-items: center; height: 100vh; }
+    .login-box { background: white; padding: 2em; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); width: 300px; }
+    input { width: 100%; padding: 0.5em; margin-bottom: 1em; }
+    button { width: 100%; padding: 0.6em; background-color: #007bff; color: white; border: none; cursor: pointer; }
   </style>
 </head>
 <body>
-
-  <h1>Recherche de Rendez-vous Médicaux</h1>
-
-  <div class="form-group">
-    <label for="ville">Choisissez une ville :</label>
-    <select id="ville">
-      <!-- Options générées dynamiquement -->
-    </select>
+  <div class="login-box">
+    <h2>Connexion</h2>
+    <input type="text" id="username" placeholder="Nom d'utilisateur" />
+    <input type="password" id="password" placeholder="Mot de passe" />
+    <button onclick="login()">Se connecter</button>
   </div>
-
-  <div class="form-group">
-    <label for="specialite">Choisissez une spécialité :</label>
-    <select id="specialite">
-      <!-- Options générées dynamiquement -->
-    </select>
-  </div>
-
-  <button onclick="rechercherRDV()">Rechercher</button>
-
-  <div id="results"></div>
-
   <script>
-    const specialites = [
-      "Médecin Généraliste", "Dentiste", "Dermatologue", "Cardiologue", "Ophtalmologue",
-      "Pédiatre", "Psychiatre", "Gynécologue", "Neurologue", "ORL", "Rhumatologue",
-      "Endocrinologue", "Urologue", "Chirurgien", "Oncologue", "Pneumologue",
-      "Gastro-entérologue", "Allergologue", "Médecin du sport", "Anesthésiste",
-      "Radiologue", "Infectiologue", "Gériatre", "Sexologue", "Néphrologue"
-    ];
-
-    const villes = [
-      "Paris", "Lyon", "Marseille", "New York", "Tokyo", "Berlin", "Londres",
-      "Rome", "Madrid", "Toronto", "Bruxelles", "Dakar", "Sydney", "Buenos Aires",
-      "Nairobi", "Casablanca", "Hanoï", "Montréal", "Moscou", "Istanbul"
-    ];
-
-    const horaires = ["08:00", "09:30", "11:00", "14:00", "15:30", "17:00"];
-
-    function generateNom() {
-      const prenoms = ["Alice", "Jean", "Karim", "Lucia", "Naoki", "Elise", "Fatima", "Tom", "Rita", "Omar"];
-      const noms = ["Durand", "Lemoine", "Nguyen", "Kowalski", "Moreau", "Singh", "Petit", "Takahashi", "Lopez", "Smith"];
-      return `Dr. ${prenoms[Math.floor(Math.random() * prenoms.length)]} ${noms[Math.floor(Math.random() * noms.length)]}`;
-    }
-
-    function shuffle(arr) {
-      return arr.sort(() => Math.random() - 0.5);
-    }
-
-    function generateCreneaux() {
-      return shuffle([...horaires]).slice(0, 3);
-    }
-
-    // Génère les RDV garantis pour chaque ville + spécialité
-    const rdvs = [];
-    villes.forEach(ville => {
-      specialites.forEach(specialite => {
-        rdvs.push({
-          ville,
-          specialite,
-          medecin: generateNom(),
-          creneaux: generateCreneaux()
-        });
-      });
-    });
-
-    // Remplit les selecteurs
-    const villeSelect = document.getElementById("ville");
-    const specialiteSelect = document.getElementById("specialite");
-
-    villes.forEach(v => {
-      const opt = document.createElement("option");
-      opt.value = v;
-      opt.textContent = v;
-      villeSelect.appendChild(opt);
-    });
-
-    specialites.forEach(s => {
-      const opt = document.createElement("option");
-      opt.value = s;
-      opt.textContent = s;
-      specialiteSelect.appendChild(opt);
-    });
-
-    // Affiche les résultats
-    function rechercherRDV() {
-      const villeChoisie = villeSelect.value;
-      const specialiteChoisie = specialiteSelect.value;
-      const results = document.getElementById("results");
-      results.innerHTML = "";
-
-      const correspondants = rdvs.filter(rdv =>
-        rdv.ville === villeChoisie && rdv.specialite === specialiteChoisie
-      );
-
-      if (correspondants.length === 0) {
-        results.innerHTML = "<p>Aucun rendez-vous trouvé.</p>";
-        return;
+    function login() {
+      const user = document.getElementById("username").value;
+      const pass = document.getElementById("password").value;
+      if (user && pass) {
+        localStorage.setItem("loggedIn", "true");
+        window.location.href = "recherche.html";
+      } else {
+        alert("Veuillez remplir tous les champs.");
       }
-
-      correspondants.forEach(rdv => {
-        const div = document.createElement("div");
-        div.className = "rdv-card";
-        div.innerHTML = `
-          <strong>${rdv.medecin}</strong><br>
-          ${rdv.specialite} - ${rdv.ville}<br>
-          <div class="creneaux">
-            ${rdv.creneaux.map(c => `<span>${c}</span>`).join("")}
-          </div>
-        `;
-        results.appendChild(div);
-      });
     }
   </script>
 </body>
